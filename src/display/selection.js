@@ -4,6 +4,7 @@ import { getLine } from "../line/utils_line.js"
 import { charCoords, cursorCoords, displayWidth, paddingH, wrappedLineExtentChar } from "../measurement/position_measurement.js"
 import { getOrder, iterateBidiSections } from "../util/bidi.js"
 import { elt } from "../util/dom.js"
+import { getDisplayScale } from './scale.js'
 
 export function updateSelection(cm) {
   cm.display.input.showSelection(cm.display.input.prepareSelection())
@@ -29,20 +30,21 @@ export function prepareSelection(cm, primary = true) {
 
 // Draws a cursor for the given range
 export function drawSelectionCursor(cm, head, output) {
+  const displayScale = getDisplayScale();
   let pos = cursorCoords(cm, head, "div", null, null, !cm.options.singleCursorHeightPerLine)
 
   let cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor"))
-  cursor.style.left = (pos.left / CodeMirror.displayScale) + "px"
-  cursor.style.top = (pos.top / CodeMirror.displayScale) + "px"
-  cursor.style.height = ((Math.max(0, pos.bottom - pos.top) * cm.options.cursorHeight) / CodeMirror.displayScale) + "px"
+  cursor.style.left = (pos.left / displayScale) + "px"
+  cursor.style.top = (pos.top / displayScale) + "px"
+  cursor.style.height = ((Math.max(0, pos.bottom - pos.top) * cm.options.cursorHeight) / displayScale) + "px"
 
   if (pos.other) {
     // Secondary cursor, shown when on a 'jump' in bi-directional text
     let otherCursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor CodeMirror-secondarycursor"))
     otherCursor.style.display = ""
-    otherCursor.style.left = (pos.other.left / CodeMirror.displayScale) + "px"
-    otherCursor.style.top = (pos.other.top / CodeMirror.displayScale) + "px"
-    otherCursor.style.height = (((pos.other.bottom - pos.other.top) * .85) / CodeMirror.displayScale) + "px"
+    otherCursor.style.left = (pos.other.left / displayScale) + "px"
+    otherCursor.style.top = (pos.other.top / displayScale) + "px"
+    otherCursor.style.height = (((pos.other.bottom - pos.other.top) * .85) / displayScale) + "px"
   }
 }
 
@@ -60,9 +62,9 @@ function drawSelectionRange(cm, range, output) {
     if (top < 0) top = 0
     top = Math.round(top)
     bottom = Math.round(bottom)
-    fragment.appendChild(elt("div", null, "CodeMirror-selected", `position: absolute; left: ${left / CodeMirror.displayScale}px;
-                             top: ${top / CodeMirror.displayScale}px; width: ${(width == null ? rightSide - left : width) / CodeMirror.displayScale}px;
-                             height: ${(bottom - top) / CodeMirror.displayScale}px`))
+    fragment.appendChild(elt("div", null, "CodeMirror-selected", `position: absolute; left: ${left / displayScale}px;
+                             top: ${top / displayScale}px; width: ${(width == null ? rightSide - left : width) / displayScale}px;
+                             height: ${(bottom - top) / displayScale}px`))
   }
 
   function drawForLine(line, fromArg, toArg) {

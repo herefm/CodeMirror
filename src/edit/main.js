@@ -3,6 +3,8 @@
 import { CodeMirror } from "./CodeMirror.js"
 export { CodeMirror } from "./CodeMirror.js"
 
+import { setDisplayScale } from '../display/scale.js'
+
 import { eventMixin } from "../util/event.js"
 import { indexOf } from "../util/misc.js"
 
@@ -67,4 +69,6 @@ import { addLegacyProps } from "./legacy.js"
 addLegacyProps(CodeMirror)
 
 CodeMirror.version = "5.56.0"
-CodeMirror.displayScale = 1.0
+CodeMirror.setDisplayScale = function(value) {
+  setDisplayScale(value);
+}
