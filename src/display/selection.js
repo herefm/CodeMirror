@@ -32,17 +32,17 @@ export function drawSelectionCursor(cm, head, output) {
   let pos = cursorCoords(cm, head, "div", null, null, !cm.options.singleCursorHeightPerLine)
 
   let cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor"))
-  cursor.style.left = pos.left + "px"
-  cursor.style.top = pos.top + "px"
-  cursor.style.height = Math.max(0, pos.bottom - pos.top) * cm.options.cursorHeight + "px"
+  cursor.style.left = (pos.left / CodeMirror.displayScale) + "px"
+  cursor.style.top = (pos.top / CodeMirror.displayScale) + "px"
+  cursor.style.height = ((Math.max(0, pos.bottom - pos.top) * cm.options.cursorHeight) / CodeMirror.displayScale) + "px"
 
   if (pos.other) {
     // Secondary cursor, shown when on a 'jump' in bi-directional text
     let otherCursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor CodeMirror-secondarycursor"))
     otherCursor.style.display = ""
-    otherCursor.style.left = pos.other.left + "px"
-    otherCursor.style.top = pos.other.top + "px"
-    otherCursor.style.height = (pos.other.bottom - pos.other.top) * .85 + "px"
+    otherCursor.style.left = (pos.other.left / CodeMirror.displayScale) + "px"
+    otherCursor.style.top = (pos.other.top / CodeMirror.displayScale) + "px"
+    otherCursor.style.height = (((pos.other.bottom - pos.other.top) * .85) / CodeMirror.displayScale) + "px"
   }
 }
 
@@ -60,9 +60,9 @@ function drawSelectionRange(cm, range, output) {
     if (top < 0) top = 0
     top = Math.round(top)
     bottom = Math.round(bottom)
-    fragment.appendChild(elt("div", null, "CodeMirror-selected", `position: absolute; left: ${left}px;
-                             top: ${top}px; width: ${width == null ? rightSide - left : width}px;
-                             height: ${bottom - top}px`))
+    fragment.appendChild(elt("div", null, "CodeMirror-selected", `position: absolute; left: ${left / CodeMirror.displayScale}px;
+                             top: ${top / CodeMirror.displayScale}px; width: ${(width == null ? rightSide - left : width) / CodeMirror.displayScale}px;
+                             height: ${(bottom - top) / CodeMirror.displayScale}px`))
   }
 
   function drawForLine(line, fromArg, toArg) {

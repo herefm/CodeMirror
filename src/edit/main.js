@@ -67,3 +67,4 @@ import { addLegacyProps } from "./legacy.js"
 addLegacyProps(CodeMirror)
 
 CodeMirror.version = "5.56.0"
+CodeMirror.displayScale = 1.0
