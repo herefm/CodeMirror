@@ -59,6 +59,7 @@ function drawSelectionRange(cm, range, output) {
   let docLTR = doc.direction == "ltr"
 
   function add(left, top, width, bottom) {
+    const displayScale = getDisplayScale();
     if (top < 0) top = 0
     top = Math.round(top)
     bottom = Math.round(bottom)
