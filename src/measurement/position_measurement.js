@@ -679,13 +679,12 @@ export function posFromMouse(cm, e, liberal, forRect) {
   try { x = e.clientX - space.left; y = e.clientY - space.top }
   catch (e) { return null }
   let coords = coordsChar(cm, x, y), line
-  console.log("Coord pre-adjustment: " + JSON.stringify(coords));
+
   if (forRect && coords.xRel > 0 && (line = getLine(cm.doc, coords.line).text).length == coords.ch) {
     let colDiff = countColumn(line, line.length, cm.options.tabSize) - line.length
     coords = Pos(coords.line, Math.max(0, Math.round((x - paddingH(cm.display).left) / charWidth(cm.display)) - colDiff))
   }
 
-  console.log("posFromMouse: " + x + "/" + y + "/" + space.left + "/" + space.top + "/" + JSON.stringify(coords));
   return coords
 }
 
